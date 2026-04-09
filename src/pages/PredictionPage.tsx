@@ -17,9 +17,14 @@ export default function PredictionPage() {
     setResponseResult(null);
 
     try {
+      const processedData = {
+        ...data,
+        age: typeof data.age === 'string' ? parseFloat(data.age) || 0 : data.age,
+      };
+
       const [recurrence, response] = await Promise.all([
-        predictRecurrence(data),
-        predictResponse(data),
+        predictRecurrence(processedData),
+        predictResponse(processedData),
       ]);
 
       setRecurrenceResult(recurrence);

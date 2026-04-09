@@ -10,20 +10,20 @@ interface PredictionFormProps {
 
 export default function PredictionForm({ onSubmit, loading, error }: PredictionFormProps) {
   const [formData, setFormData] = useState<PatientData>({
-    age: 45,
-    gender: 'F',
-    smoking: 'No',
-    hx_smoking: 'No',
-    hx_radiotherapy: 'No',
-    thyroid_function: 'Euthyroid',
-    physical_examination: 'Normal',
-    adenopathy: 'No',
-    pathology: 'Papillary',
-    focality: 'Uni-Focal',
-    risk: 'Low',
-    t: 'T1a',
-    n: 'N0',
-    m: 'M0',
+    age: '',
+    gender: '',
+    smoking: '',
+    hx_smoking: '',
+    hx_radiotherapy: '',
+    thyroid_function: '',
+    physical_examination: '',
+    adenopathy: '',
+    pathology: '',
+    focality: '',
+    risk: '',
+    t: '',
+    n: '',
+    m: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -51,6 +51,7 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             onChange={handleChange}
             min="0"
             max="120"
+            placeholder="Enter age"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             required
           />
@@ -63,7 +64,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.gender}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="M">Male</option>
             <option value="F">Female</option>
           </select>
@@ -76,7 +79,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.smoking}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="No">No</option>
             <option value="Yes">Yes</option>
           </select>
@@ -89,7 +94,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.hx_smoking}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="No">No</option>
             <option value="Yes">Yes</option>
           </select>
@@ -102,7 +109,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.hx_radiotherapy}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="No">No</option>
             <option value="Yes">Yes</option>
           </select>
@@ -115,7 +124,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.thyroid_function}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="Euthyroid">Euthyroid</option>
             <option value="Clinical Hyperthyroidism">Clinical Hyperthyroidism</option>
             <option value="Subclinical Hyperthyroidism">Subclinical Hyperthyroidism</option>
@@ -131,7 +142,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.physical_examination}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="Normal">Normal</option>
             <option value="Single nodular goiter-left">Single nodular goiter-left</option>
             <option value="Single nodular goiter-right">Single nodular goiter-right</option>
@@ -146,7 +159,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.adenopathy}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="No">No</option>
             <option value="Right">Right</option>
             <option value="Left">Left</option>
@@ -162,7 +177,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.pathology}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="Micropapillary">Micropapillary</option>
             <option value="Papillary">Papillary</option>
             <option value="Follicular">Follicular</option>
@@ -177,7 +194,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.focality}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="Uni-Focal">Uni-Focal</option>
             <option value="Multi-Focal">Multi-Focal</option>
           </select>
@@ -190,7 +209,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.risk}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="Low">Low</option>
             <option value="Intermediate">Intermediate</option>
             <option value="High">High</option>
@@ -204,7 +225,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.t}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="T1a">T1a</option>
             <option value="T1b">T1b</option>
             <option value="T2">T2</option>
@@ -222,7 +245,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.n}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="N0">N0</option>
             <option value="N1a">N1a</option>
             <option value="N1b">N1b</option>
@@ -236,7 +261,9 @@ export default function PredictionForm({ onSubmit, loading, error }: PredictionF
             value={formData.m}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           >
+            <option value="">Select...</option>
             <option value="M0">M0</option>
             <option value="M1">M1</option>
           </select>

@@ -1,5 +1,5 @@
 export interface PatientData {
-  age: number;
+  age: number | string;
   gender: string;
   smoking: string;
   hx_smoking: string;
