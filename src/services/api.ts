@@ -1,6 +1,7 @@
 import { PatientData, PredictionResult } from '../types';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL?.replace(/\/$/, '') || 'http://localhost:8000';
 
 export const predictRecurrence = async (data: PatientData): Promise<PredictionResult> => {
   const response = await fetch(`${API_BASE_URL}/predict-recurrence`, {

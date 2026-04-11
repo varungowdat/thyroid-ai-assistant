@@ -9,9 +9,19 @@ from utils.preprocessing import preprocess_patient_data
 
 app = FastAPI(title="Thyroid AI Assistant API")
 
+
+def get_allowed_origins() -> list[str]:
+    frontend_url = os.getenv("FRONTEND_URL", "").strip()
+    default_origins = ["http://localhost:5173", "http://localhost:3000"]
+    if not frontend_url:
+        return default_origins
+
+    env_origins = [origin.strip() for origin in frontend_url.split(",") if origin.strip()]
+    return list(dict.fromkeys(default_origins + env_origins))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=get_allowed_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -134,4 +144,5 @@ def predict_response(patient: PatientData):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.getenv("PORT", "8000"))
+    uvicorn.run(app, host="0.0.0.0", port=port)
