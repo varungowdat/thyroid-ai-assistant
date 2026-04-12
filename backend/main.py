@@ -68,13 +68,34 @@ def create_fallback_models():
 
     return recurrence_model, response_model, recurrence_scaler, response_scaler
 
+
+def should_use_fallback_models() -> bool:
+    """
+    Railway is currently running with model pickle files produced by a different
+    sklearn version. Use the in-memory fallback models there unless explicitly
+    overridden.
+    """
+    override = os.getenv("ALLOW_PICKLED_MODELS", "").strip().lower()
+    if override in {"1", "true", "yes"}:
+        return False
+
+    railway_markers = [
+        os.getenv("RAILWAY_ENVIRONMENT"),
+        os.getenv("RAILWAY_PROJECT_ID"),
+        os.getenv("RAILWAY_SERVICE_ID"),
+    ]
+    return any(bool(marker) for marker in railway_markers)
+
 try:
+    if should_use_fallback_models():
+        raise RuntimeError("Using fallback models in Railway environment")
+
     recurrence_model = joblib.load(os.path.join(models_dir, 'recurrence_model.pkl'))
     response_model = joblib.load(os.path.join(models_dir, 'response_model.pkl'))
     recurrence_scaler = joblib.load(os.path.join(models_dir, 'recurrence_scaler.pkl'))
     try:
         response_scaler = joblib.load(os.path.join(models_dir, 'response_scaler.pkl'))
-    except:
+    except Exception:
         response_scaler = recurrence_scaler
 except Exception as e:
     print(f"Warning: Could not load models, creating fallback models instead: {e}")
