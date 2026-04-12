@@ -71,20 +71,12 @@ def create_fallback_models():
 
 def should_use_fallback_models() -> bool:
     """
-    Railway is currently running with model pickle files produced by a different
-    sklearn version. Use the in-memory fallback models there unless explicitly
-    overridden.
+    Default to the stable in-memory fallback models unless explicitly told to
+    load the bundled pickle files. This avoids runtime failures when the pickle
+    files were created with a different sklearn version than production.
     """
     override = os.getenv("ALLOW_PICKLED_MODELS", "").strip().lower()
-    if override in {"1", "true", "yes"}:
-        return False
-
-    railway_markers = [
-        os.getenv("RAILWAY_ENVIRONMENT"),
-        os.getenv("RAILWAY_PROJECT_ID"),
-        os.getenv("RAILWAY_SERVICE_ID"),
-    ]
-    return any(bool(marker) for marker in railway_markers)
+    return override not in {"1", "true", "yes"}
 
 try:
     if should_use_fallback_models():
