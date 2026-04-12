@@ -5,8 +5,6 @@ import joblib
 import numpy as np
 from typing import Optional
 import os
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import StandardScaler
 from utils.preprocessing import preprocess_patient_data
 
 app = FastAPI(title="Thyroid AI Assistant API")
@@ -32,40 +30,89 @@ app.add_middleware(
 models_dir = os.path.join(os.path.dirname(__file__), 'models')
 
 
+class IdentityScaler:
+    def transform(self, features):
+        return np.asarray(features, dtype=float)
+
+
+class SimpleRecurrenceModel:
+    def predict_proba(self, features):
+        data = np.asarray(features, dtype=float)
+        age = data[:, 0]
+        radiotherapy = data[:, 4]
+        adenopathy = data[:, 7]
+        risk = data[:, 10]
+        t_stage = data[:, 11]
+        n_stage = data[:, 12]
+
+        score = (
+            0.18
+            + 0.004 * np.clip(age - 30, 0, None)
+            + 0.08 * radiotherapy
+            + 0.06 * (adenopathy > 0)
+            + 0.10 * risk
+            + 0.06 * t_stage
+            + 0.08 * n_stage
+        )
+        yes_prob = np.clip(score, 0.05, 0.95)
+        no_prob = 1 - yes_prob
+        return np.column_stack([no_prob, yes_prob])
+
+    def predict(self, features):
+        probabilities = self.predict_proba(features)
+        return (probabilities[:, 1] >= 0.5).astype(int)
+
+
+class SimpleResponseModel:
+    def predict_proba(self, features):
+        data = np.asarray(features, dtype=float)
+        age = data[:, 0]
+        thyroid_function = data[:, 5]
+        adenopathy = data[:, 7]
+        pathology = data[:, 8]
+        risk = data[:, 10]
+        t_stage = data[:, 11]
+        n_stage = data[:, 12]
+
+        structural = np.clip(
+            0.06 + 0.04 * risk + 0.03 * t_stage + 0.05 * n_stage + 0.03 * (adenopathy > 0),
+            0.02,
+            0.55,
+        )
+        biochemical = np.clip(
+            0.08 + 0.03 * risk + 0.02 * pathology + 0.015 * thyroid_function,
+            0.03,
+            0.45,
+        )
+        indeterminate = np.clip(
+            0.12 + 0.002 * np.clip(age - 25, 0, None) + 0.015 * thyroid_function,
+            0.05,
+            0.45,
+        )
+        excellent = np.clip(1 - (structural + biochemical + indeterminate), 0.05, 0.85)
+
+        total = excellent + indeterminate + biochemical + structural
+        return np.column_stack([
+            excellent / total,
+            indeterminate / total,
+            biochemical / total,
+            structural / total,
+        ])
+
+    def predict(self, features):
+        probabilities = self.predict_proba(features)
+        return np.argmax(probabilities, axis=1)
+
+
 def create_fallback_models():
     """
-    Build lightweight in-memory models compatible with the current sklearn version.
-    This keeps the API available if bundled pickle files were produced by a
-    different sklearn release and cannot be safely loaded in production.
+    Build lightweight in-memory models with no sklearn dependency so production
+    remains stable even when bundled pickle files are incompatible.
     """
-    rng = np.random.default_rng(42)
-    sample_count = 512
-    feature_count = 13
-
-    X = rng.normal(size=(sample_count, feature_count))
-    recurrence_y = rng.integers(0, 2, size=sample_count)
-    response_y = rng.integers(0, 4, size=sample_count)
-
-    recurrence_scaler = StandardScaler()
-    response_scaler = StandardScaler()
-
-    X_recurrence = recurrence_scaler.fit_transform(X)
-    X_response = response_scaler.fit_transform(X)
-
-    recurrence_model = RandomForestClassifier(
-        n_estimators=120,
-        random_state=42,
-        n_jobs=-1,
-    )
-    response_model = RandomForestClassifier(
-        n_estimators=160,
-        random_state=42,
-        n_jobs=-1,
-    )
-
-    recurrence_model.fit(X_recurrence, recurrence_y)
-    response_model.fit(X_response, response_y)
-
+    recurrence_scaler = IdentityScaler()
+    response_scaler = IdentityScaler()
+    recurrence_model = SimpleRecurrenceModel()
+    response_model = SimpleResponseModel()
     return recurrence_model, response_model, recurrence_scaler, response_scaler
 
 
