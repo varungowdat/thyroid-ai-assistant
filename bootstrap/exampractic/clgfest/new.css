@@ -1,0 +1,230 @@
+
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #090914;
+    color: white;
+}
+
+/* ===== HEADER ===== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 8%;
+    background: #10101f;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: 900;
+    color: #a855f7;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #c084fc;
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+
+    background:
+        radial-gradient(ellipse at top, #422080 0%, transparent 60%),
+        linear-gradient(135deg, #090914, #17112c);
+}
+
+.tag {
+    color: #d8b4fe;
+    border: 1px solid #a855f7;
+    padding: 9px 20px;
+    border-radius: 30px;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    font-size: clamp(55px, 10vw, 110px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -4px;
+}
+
+.hero h1 span {
+    color: #c084fc;
+}
+
+.hero p {
+    max-width: 600px;
+    color: #c4c4d4;
+    margin: 25px 0;
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+/* ===== BUTTON ===== */
+.btn {
+    display: inline-block;
+    padding: 14px 30px;
+    background: linear-gradient(90deg, #9333ea, #ec4899);
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px #9333ea66;
+}
+
+/* ===== GENERAL SECTIONS ===== */
+section {
+    padding: 75px 8%;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 38px;
+    margin-bottom: 15px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #aaaac0;
+    margin-bottom: 40px;
+}
+
+/* ===== EVENTS ===== */
+.events {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+}
+
+.card {
+    background: #151525;
+    padding: 30px 24px;
+    border: 1px solid #292940;
+    border-radius: 16px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    border-color: #a855f7;
+    box-shadow: 0 10px 30px #9333ea22;
+}
+
+.emoji {
+    font-size: 40px;
+    margin-bottom: 18px;
+}
+
+.card h3 {
+    margin-bottom: 12px;
+    font-size: 22px;
+}
+
+.card p {
+    color: #b7b7ca;
+    line-height: 1.6;
+}
+
+/* ===== SCHEDULE ===== */
+.schedule {
+    background: #11111e;
+}
+
+.day {
+    max-width: 700px;
+    margin: 15px auto;
+    padding: 22px;
+    border-left: 4px solid #c084fc;
+    background: #1a1a2c;
+    border-radius: 8px;
+    line-height: 1.9;
+}
+
+.day h3 {
+    color: #d8b4fe;
+    margin-bottom: 8px;
+}
+
+/* ===== REGISTRATION ===== */
+.register {
+    text-align: center;
+    background:
+        radial-gradient(ellipse at center, #38205e, #090914 75%);
+}
+
+.register p {
+    color: #c4c4d4;
+    margin: 20px 0 30px;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    text-align: center;
+    padding: 25px;
+    background: #10101f;
+    color: #aaaac0;
+    line-height: 1.6;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    nav a {
+        margin: 0;
+        font-size: 13px;
+    }
+
+    .hero h1 {
+        letter-spacing: -2px;
+    }
+
+    .section-title {
+        font-size: 30px;
+    }
+
+    section {
+        padding: 55px 6%;
+    }
+
+    .events {
+        grid-template-columns: 1fr;
+    }
+}
